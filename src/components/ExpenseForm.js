@@ -5,13 +5,14 @@ import { SingleDatePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 export default class Expense extends React.Component {
-    
+
     state = {
         description: '',
         notes:  '',
         amount:  '',
         createdAt: moment(),
-        calfocused: false
+        calfocused: false,
+        error: ''
     };
 
     onDescriptionChange = (e) => {
@@ -23,29 +24,53 @@ export default class Expense extends React.Component {
     onNotesChange = (e) => {
         const notes = e.target.value;
         this.setState(() => ({ notes }));
-
     };
 
     onAmountChange = (e) => {
         const amount = e.target.value;
 
-        if (amount.match(/^\d*(\.\d{0,2})?$/)) {
+        if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
             this.setState(() => ({ amount }));
         }
     };
 
     onDateChange = (createdAt) => {
-        this.setState(() => ({ createdAt }));
+        if(createdAt)
+        {
+            this.setState(() => ({ createdAt }));
+        }
     };
 
     onFocusChange = ({ focused }) => {
         this.setState(() => ({ calfocused: focused }));
     };
 
+    onSubmit = (e) => {
+        e.preventDefault();
+
+        if (!this.state.description || !this.state.amount )
+        {
+            this.setState(() => ({ error: 'Please provide description and amount' }));
+        } 
+        else 
+        {
+            this.setState(() => ({ error: '' }));
+            // console.log('submitted');
+        }
+
+        this.props.onSubmit({
+            description: this.state.description,
+            amount: parseFloat(this.state.amount, 10) + 100,
+            createdAt: this.state.createdAt.valueOf(),
+            note: this.state.notes
+        });
+    }
+
     render() {
         return (
             <div>
-                <form>
+                {this.state.error && <p>{this.state.error}</p>}
+                <form onSubmit={this.onSubmit}>
                     <input 
                         type="text"
                         placeholder="Description"
