@@ -1,19 +1,25 @@
 import React from 'react';
 import moment from 'moment';
-import 'react-dates/initialize';
 import { SingleDatePicker } from 'react-dates';
+import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 export default class Expense extends React.Component {
 
-    state = {
-        description: '',
-        notes:  '',
-        amount:  '',
-        createdAt: moment(),
-        calfocused: false,
-        error: ''
-    };
+    constructor(props)
+    {
+        super(props);
+
+        this.state = {
+            description: props.expense ? props.expense.description : '',
+            notes: props.expense ? props.expense.notes : '',
+            amount: props.expense ? (props.expense.amount).toString() : '',
+            createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
+            calfocused: false,
+            error: ''
+        };
+    }
+
 
     onDescriptionChange = (e) => {
         const description = e.target.value;
@@ -99,7 +105,7 @@ export default class Expense extends React.Component {
                     >
                         
                     </textarea>
-                    <button>Add Expense</button>
+                    <button> Add Expense </button>
                 </form>
             </div>
         )

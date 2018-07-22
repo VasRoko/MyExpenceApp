@@ -7,16 +7,17 @@ const ExpenseList = (props) => (
     <div>
         <h1>Expense LIst</h1>
         {props.expenses.map((expense) => {
+            // console.log(expense);
             return <ExpenseListItem key={expense.id} {...expense} />;
         })}
     </div>
 );
 
-const maStateToProps = (state) => {
+const mapStateToProps = (state) => {
     return {
         expenses: selectedExpenses(state.expenses, state.filters), 
         filters: state.filters
     };
 };
 
-export default connect(maStateToProps)(ExpenseList);
+export default connect(mapStateToProps)(ExpenseList);
