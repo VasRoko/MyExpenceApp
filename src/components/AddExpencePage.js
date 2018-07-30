@@ -10,8 +10,6 @@ const AddExpencePage = (props) => (
             onSubmit={(expense) => {
                 // console.log(expense);
                 props.dispatch(addExpense(expense));
-                alert('Expense has been created!');
-                
                 props.history.push('/');
             }}
         />
